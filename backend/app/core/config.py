@@ -22,8 +22,9 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5175",
         "http://127.0.0.1:5176",
         # Production - Add your Vercel URL here after deployment
-        "https://promptmaster-5f2t9k85k-tejas-dhoks-projects.vercel.app",  # Replace with your actual Vercel URL
-        "https://promptmaster-six.vercel.app",  # Allow all Vercel preview deployments
+        "https://promptmaster-5f2t9k85k-tejas-dhoks-projects.vercel.app",
+        "https://promptmaster-six.vercel.app",
+        "https://*.vercel.app",  # Allow all Vercel preview deployments
     ]
     
     # Supabase

@@ -36,25 +36,43 @@ const Challenges = () => {
   const fetchChallenges = async () => {
     try {
       setLoading(true);
-      setError(""); // Clear previous errors
+      setError("");
       const params = {};
       if (selectedCategory !== "all") params.category = selectedCategory;
-      if (selectedDifficulty !== "all") params.difficulty = selectedDifficulty;
+      if (selectedDifficulty !== "all")
+        params.difficulty = selectedDifficulty.toLowerCase();
 
+      console.log("Fetching challenges with params:", params);
       const response = await challengesApi.getAll(params);
-      setChallenges(response.data);
+      console.log("Challenges API response:", response);
+      console.log("Challenges data:", response.data);
+
+      // Handle both response.data (array) and direct array response
+      const challengesData = Array.isArray(response.data)
+        ? response.data
+        : response.data?.data || [];
+      setChallenges(challengesData);
+
+      if (challengesData.length === 0) {
+        console.warn("No challenges returned from API");
+      }
     } catch (err) {
       console.error("Challenges error:", err);
-      
+
       let errorMessage = "Failed to load challenges";
-      
-      if (err.code === 'ECONNABORTED' || err.message.includes('timeout')) {
-        errorMessage = "Server is waking up (free tier). This may take up to 60 seconds. Please wait and try again.";
-      } else if (err.message === 'Network Error' || !err.response) {
-        errorMessage = "Cannot connect to server. The backend might be starting up (this takes 30-60 seconds on free tier). Please wait and retry.";
+
+      if (err.code === "ECONNABORTED" || err.message.includes("timeout")) {
+        errorMessage =
+          "Server is waking up (free tier). This may take up to 60 seconds. Please wait and try again.";
+      } else if (err.message === "Network Error" || !err.response) {
+        errorMessage =
+          "Cannot connect to server. The backend might be starting up (this takes 30-60 seconds on free tier). Please wait and retry.";
+      } else if (err.response?.data?.detail) {
+        errorMessage = err.response.data.detail;
       }
-      
+
       setError(errorMessage);
+      console.error("Error response:", err.response);
     } finally {
       setLoading(false);
     }

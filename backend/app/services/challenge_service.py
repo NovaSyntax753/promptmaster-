@@ -25,9 +25,14 @@ class ChallengeService:
                 query = query.eq("category", category)
             
             if difficulty:
-                query = query.eq("difficulty", difficulty)
+                # Normalize difficulty to lowercase for case-insensitive matching
+                difficulty_lower = difficulty.lower()
+                query = query.eq("difficulty", difficulty_lower)
             
             response = query.execute()
+            
+            if not response.data:
+                return []
             
             return [Challenge(**challenge) for challenge in response.data]
         except Exception as e:

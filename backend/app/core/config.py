@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     
     # CORS
     BACKEND_CORS_ORIGINS: List[str] = [
+        # Local development
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
@@ -20,6 +21,9 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5174",
         "http://127.0.0.1:5175",
         "http://127.0.0.1:5176",
+        # Production - Add your Vercel URL here after deployment
+        "https://promptmaster-xyz.vercel.app",  # Replace with your actual Vercel URL
+        "https://*.vercel.app",  # Allow all Vercel preview deployments
     ]
     
     # Supabase

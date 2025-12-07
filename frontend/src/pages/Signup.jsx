@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { Mail, Lock, User, Chrome, AlertCircle } from "lucide-react";
+import { Mail, Lock, User, Chrome, AlertCircle, CheckCircle } from "lucide-react";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -11,11 +11,13 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess(false);
 
     if (password !== confirmPassword) {
       return setError("Passwords do not match");
@@ -29,7 +31,9 @@ const Signup = () => {
 
     try {
       await signUp(email, password, fullName);
-      navigate("/");
+      setSuccess(true);
+      // Don't navigate immediately, show success message first
+      setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
       setError(err.message || "Failed to create account");
     } finally {
@@ -65,6 +69,19 @@ const Signup = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8">
+          {success && (
+            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
+              <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-green-800">
+                <p className="font-semibold mb-1">Account created successfully!</p>
+                <p>Please check your email to verify your account.</p>
+                <p className="mt-1 text-green-700">
+                  <strong>Note:</strong> The verification email might be in your spam folder.
+                </p>
+              </div>
+            </div>
+          )}
+
           {error && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
               <AlertCircle className="h-5 w-5 text-red-600 mr-2 flex-shrink-0 mt-0.5" />

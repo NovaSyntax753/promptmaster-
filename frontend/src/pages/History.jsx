@@ -22,6 +22,7 @@ const History = () => {
   const fetchHistory = async () => {
     try {
       setLoading(true);
+      setError(""); // Clear previous errors
       const response = await evaluationApi.getHistory({
         limit: 10,
         offset: page * 10,
@@ -35,8 +36,17 @@ const History = () => {
 
       setHasMore(response.data.length === 10);
     } catch (err) {
-      setError("Failed to load history");
-      console.error(err);
+      console.error("History error:", err);
+      
+      let errorMessage = "Failed to load history";
+      
+      if (err.code === 'ECONNABORTED' || err.message.includes('timeout')) {
+        errorMessage = "Server is waking up (free tier). This may take up to 60 seconds. Please wait and try again.";
+      } else if (err.message === 'Network Error' || !err.response) {
+        errorMessage = "Cannot connect to server. The backend might be starting up (this takes 30-60 seconds on free tier). Please wait and retry.";
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

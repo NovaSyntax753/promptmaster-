@@ -5,9 +5,6 @@ supabase==2.3.4
 pydantic==2.5.3
 pydantic-settings==2.1.0
 httpx==0.26.0
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
+PyJWT==2.8.0
 python-multipart==0.0.6
 openai==1.10.0
-pytest==7.4.3
-pytest-asyncio==0.23.3

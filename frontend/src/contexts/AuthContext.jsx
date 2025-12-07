@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
         data: {
           full_name: fullName,
         },
+        emailRedirectTo: window.location.origin,
       },
     });
 
@@ -111,6 +112,9 @@ export const AuthProvider = ({ children }) => {
   const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
 
     if (error) throw error;

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PromptMaster - Test & Improve Your Prompting Skills</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Prevent jQuery conflicts from browser extensions (like Adobe Acrobat)
+      (function () {
+        "use strict";
+
+        // Suppress jQuery errors from browser extensions
+        const originalError = console.error;
+        console.error = function (...args) {
+          // Filter out jQuery selector errors from extensions
+          const message = args.join(" ");
+          if (
+            message.includes("is not a valid selector") &&
+            message.includes("jquery")
+          ) {
+            // Silently ignore jQuery extension errors
+            return;
+          }
+          originalError.apply(console, args);
+        };
+
+        // Wrap querySelectorAll to catch invalid selectors
+        const originalQuerySelectorAll =
+          document.querySelectorAll.bind(document);
+        document.querySelectorAll = function (selector) {
+          try {
+            return originalQuerySelectorAll(selector);
+          } catch (e) {
+            // Only log if it's not from an extension
+            if (!selector.includes("*,:x")) {
+              console.warn("Invalid selector ignored:", selector);
+            }
+            return [];
+          }
+        };
+
+        // Also wrap Element.prototype.querySelectorAll
+        const originalElementQuerySelectorAll =
+          Element.prototype.querySelectorAll;
+        Element.prototype.querySelectorAll = function (selector) {
+          try {
+            return originalElementQuerySelectorAll.call(this, selector);
+          } catch (e) {
+            return [];
+          }
+        };
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -108,9 +108,3 @@ INSERT INTO challenges (category, title, description, goal, example_prompt, diff
     'Extract and normalize data from this multi-format document containing both tabular and narrative sections:\n\n[Complex document here]\n\nTasks: 1) Identify all entities (people, organizations, dates, amounts), 2) Resolve any inconsistent formatting, 3) Create a normalized JSON structure with: entities array, relationships between entities, timeline of events, financial data summary. Handle edge cases like missing data, ambiguous references, and format variations. Output should be valid JSON with clear schema.',
     'advanced'
 );
-
--- Add some metadata comments
-COMMENT ON TABLE challenges IS 'Stores prompt engineering challenges across different categories and difficulty levels';
-COMMENT ON COLUMN challenges.category IS 'Challenge category: Creative Writing, Coding & Debugging, Summarization & Rewriting, or Data Extraction';
-COMMENT ON COLUMN challenges.difficulty IS 'Difficulty level: beginner, intermediate, or advanced';
-COMMENT ON COLUMN challenges.example_prompt IS 'Example of a well-crafted prompt for this challenge';
